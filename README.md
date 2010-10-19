@@ -19,10 +19,10 @@ _Without channels_
 _With Channels_
 
     var req = new Request(options);
-    req.publishes('req/complete', 'complete');
+    req.publishes('/req/complete', 'complete');
     
     var el = $('some-id');
-    el.subscribe('req/complete', function(response){
+    el.subscribe('/req/complete', function(response){
       // this == el
       this.set('text', response);
     });

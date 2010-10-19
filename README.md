@@ -1,7 +1,7 @@
 Channels
 ========
 
-`Channels` simply relay an object's events to the window, allowing other objects to subscribe to them, keeping the logic near the object taking action upon the event. This is simply an alternative pattern you may find helpful when organizing your code.  It extends upon the traditional "pub/sub" pattern already existent in MooTools.
+`Channels` simply relay an object's events to a mediator `Events` object, allowing other objects to subscribe to the events. This is simply an alternative pattern you may find helpful when organizing your code.  It extends upon the traditional "pub/sub" pattern already existent in MooTools.
 
 _Without channels_
 
@@ -39,7 +39,7 @@ _Chaining_
 Chaining is sometimes helpful, and fully supported in `Channels`.
 
     var req = new Request(options).publishes('req/complete', 'complete')
-    , el = $('some-id').subscribe('req/complete', function(res){ this.set('text', res); })
+    , el = $('some-id').subscribe('/req/complete', function(res){ this.set('text', res); })
     , fx = Fx.Tween(el).subscribe('/req/complete', function(){ this.start() });
 
 Instance Methods
@@ -62,7 +62,15 @@ The `Channels` object has a couple properties and a method:
     Channels.remove('channel');
     
     // array of current channels
-    Channels.list();
+    Channels.publishing;
+    
+    // array of current subscriptions
+    Channels.subscriptions;
+
+Todo
+----
+
+Unsubscribe an object from a channel with `unsubscribe`, but keep other element subscriptions in tact.
 
 MooTools and Publish Subscribe
 ==============================
@@ -78,3 +86,4 @@ If you're looking for traditional pub/sub with MooTools, look no further than `w
     window.addEvent('some/channel', function(arg){ /* do stuff with `arg` */ });
     window.fireEvent('some/channel', arg);
     window.removeEvents('some/channel');
+

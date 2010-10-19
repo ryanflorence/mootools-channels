@@ -19,40 +19,24 @@
 <script>
 Fx.implement(Channels.prototype);
 
-var fixture = $('fixture');
+var fixture = $('fixture').subscribe({
+	'/fx/start': function(){
+		this.set('text', 'oh cool, the fx started')
+	},
+	'/fx/complete': function(){
+		this.set('text', "All done.").set.delay(1000, this, ['text','Waiting...']);
+	}
+});
 
 var fx = new Fx.Tween(fixture, {
 	property: 'background-color',
 	duration: 2000
-});
+}).publishes(	{
+	'/fx/start': 'start',
+	'/fx/complete': 'complete'
+});;
 
 makeActions([
-
-	{
-		title: 'set up the fx events to publish',
-		description: "Nothing will happen visually",
-		fn: function(){
-			fx.publishes(	{
-				'/fx/start': 'start',
-				'/fx/complete': 'complete'
-			});
-		}
-	},
-	
-	{
-		title: 'subscribe the element to the fx channels',
-		description: 'Nothing should happen visually',
-		fn: function(){
-			fixture.subscribe({
-				'/fx/start': function(){
-					this.set('text', 'oh cool, the fx started')
-				},
-				'/fx/complete': function(){
-					this.set('text', "All done.").set.delay(1000, this, ['text','Waiting...']);
-				}
-			})
-		}
-	},
 
 	{
 		title: 'publishes and subscribe should work',
@@ -80,7 +64,7 @@ makeActions([
 	
 	{
 		title: 'remove all channels',
-		description: 'nothing should do anything anymore',
+		description: 'The animation should still happen, but the text should not change',
 		fn: function(){
 			Channels.remove('/fx/start');
 			Channels.remove('/fx/complete');

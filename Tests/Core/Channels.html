@@ -1,0 +1,67 @@
+<style>
+	#fixture {
+		width: 400px;
+		height: 250px;
+		padding-top: 50px;
+		text-align: center;
+		font-size: 50px;
+		position: absolute;
+		top: 40px;
+		left: 450px;
+		border: solid 1px;
+	}
+</style>
+
+<div id=fixture>Waiting...</div>
+
+<script src="/depender/build?require=Channels/Channels,Core/Fx.Tween"></script>
+
+<script>
+Fx.implement(Channels.prototype);
+
+var fixture = $('fixture').subscribe({
+	'/fx/start': function(){
+		this.set('text', 'oh cool, the fx started')
+	},
+	'/fx/complete': function(){
+		this.set('text', "All done.").set.delay(1000, this, ['text','Waiting...']);
+	}
+})
+
+var fx = new Fx.Tween(fixture, {
+	property: 'background-color',
+	duration: 2000
+}).publishes(	{
+	'/fx/start': 'start',
+	'/fx/complete': 'complete'
+});
+
+makeActions([
+
+	{
+		title: 'publishes and subscribe should work',
+		description: 'The Fx instance is publishing the onComplete and onStart events. The element is subscribing to both events.  When the effect starts and finishes the text of the element should change.',
+		fn: function(){
+			fx.start('#585858', '#fff');
+		}
+	},
+	
+	{
+		title: 'list channels being published',
+		description: 'A list of the channels should show up in the console',
+		fn: function(){
+			console.log(Channels.publishing);
+		}
+	},
+	
+	{
+		title: 'list subscriptions',
+		description: 'A list of the subscriptions should show up in the console',
+		fn: function(){
+			console.log(Channels.subscriptions);
+		}
+	}
+
+])
+
+</script>

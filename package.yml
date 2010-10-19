@@ -1,0 +1,10 @@
+name: Channels
+
+author: rpflo
+
+copyright: "&copy; [Ryan Florence](http://ryanflorence.com)"
+
+license: MIT-style license.
+
+sources:
+  - "Source/Channels.js"

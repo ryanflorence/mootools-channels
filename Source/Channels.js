@@ -73,7 +73,7 @@ Object.append(Channels, {
 	remove: function(channel){
 		mediator.removeEvents(channel);
 		Channels.publishing = Channels.publishing.filter(function(item){ 
-			return item.channel != '/fx/start'
+			return item.channel != channel;
 		});
 	}
 });

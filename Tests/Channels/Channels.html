@@ -39,8 +39,8 @@ var fx = new Fx.Tween(fixture, {
 makeActions([
 
 	{
-		title: 'publishes and subscribe should work',
-		description: 'If you have clicked the first two buttons, the Fx instance is publishing the onComplete and onStart event and the element is subscribing to both events.  When the effect starts and finishes the text of the element should change.',
+		title: 'start the fx',
+		description: 'If you have not removed the channels, the Fx instance is publishing the onComplete and onStart event and the element is subscribing to both.  When the effect starts and finishes the text of the element should change.',
 		fn: function(){
 			fx.start('#585858', '#fff');
 		}

@@ -65,7 +65,7 @@ var mediator = new Events
 
 , Channels = this.Channels = new Class(methods);
 
-Element.implement(methods);
+this.Element.implement(methods);
 
 Object.append(Channels, {
 	publishing: [],

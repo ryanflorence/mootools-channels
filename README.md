@@ -53,15 +53,15 @@ Both methods, `publishes` and `subscribe`, take either two args, or an object li
       'otherchannel': 'complete'
     });
 
-Channels Methods
-----------------
+Channels Methods & Properties
+-----------------------------
 
 The `Channels` object has a couple properties and a method:
 
     // remove a channel completely
     Channels.remove('channel');
     
-    // array of current channels
+    // array of current channels being published
     Channels.publishing;
     
     // array of current subscriptions

@@ -70,7 +70,12 @@ Element.implement(methods);
 Object.append(Channels, {
 	publishing: [],
 	subscriptions: [],
-	remove: function(channel){ mediator.removeEvents(channel); }
+	remove: function(channel){
+		mediator.removeEvents(channel);
+		Channels.publishing = Channels.publishing.filter(function(item){ 
+			return item.channel != '/fx/start'
+		});
+	}
 });
 
 })();

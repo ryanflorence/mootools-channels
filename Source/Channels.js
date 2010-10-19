@@ -32,7 +32,7 @@ var mediator = new Events
 	createChannel: function(channel, eventName){
 		Channels.publishing.push({publisher: this, channel: channel, event: eventName});
 		this.addEvent(eventName, function(){
-			mediator.fireEvent.apply(mediator, [channel].append(Array.from(arguments)));
+			mediator.fireEvent.apply(mediator, [channel].append(arguments));
 		});
 		return this;
 	},
@@ -43,7 +43,7 @@ var mediator = new Events
 	},
 	
 	publishes: function(){
-		return this['createChannel' + ((arguments.length == 1) ? 's' : '')].apply(this, Array.from(arguments));
+		return this['createChannel' + ((arguments.length == 1) ? 's' : '')].apply(this, arguments);
 	},
 	
 	subscribeToChannel: function(channel, fn){
@@ -58,7 +58,7 @@ var mediator = new Events
 	},
 	
 	subscribe: function(){
-		return this['subscribeToChannel' + ((arguments.length == 1) ? 's' : '')].apply(this, Array.from(arguments));
+		return this['subscribeToChannel' + ((arguments.length == 1) ? 's' : '')].apply(this, arguments);
 	}
 
 }

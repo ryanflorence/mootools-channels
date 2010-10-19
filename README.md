@@ -80,7 +80,7 @@ If you're looking for traditional pub/sub with MooTools, look no further than `w
     var semantics {
       subscribe : 'addEvent',
       publish   : 'fireEvent',
-      unsubsribe: 'removeEvents
+      unsubsribe: 'removeEvents'
     };
     
     window.addEvent('some/channel', function(arg){ /* do stuff with `arg` */ });

@@ -32,7 +32,7 @@ var mediator = new Events
 	createChannel: function(channel, eventName){
 		Channels.publishing.push({publisher: this, channel: channel, event: eventName});
 		this.addEvent(eventName, function(){
-			mediator.fireEvent.apply(mediator, [channel].append(arguments));
+			mediator.fireEvent.call(mediator, channel, arguments);
 		});
 		return this;
 	},

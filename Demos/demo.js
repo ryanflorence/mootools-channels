@@ -1,57 +1,85 @@
-var nav, el;
+// if creating your own class, just use Implements: [Events, Channels]
+Fx.implement(Channels.prototype);
 
-document.addEvent('domready', function(){
-	
-// could just use `Implements` mutator
-// but most classes already exist w/o Channels
-Nav.implement(Channels.prototype);
+window.addEvent('domready', function(){
 
-// create two objects
-nav = new Nav('nav')
-el = document.getElement('div');
+	var fixture = $('fixture').subscribe({
+		'/fx/start': function(){ this.set('text', 'oh cool, the fx started') },
+		'/fx/complete': function(){ this.set('text', "All done."); }
+	});
 
-// map an object's own events to a channel
-// when the object fires it's own event
-// it relays that to the mediator and "publishes"
-// or, in other words, fires an event.
-nav.publishes('/nav/click', 'click');
+	var fx = new Fx.Tween(fixture, {
+		property: 'background-color',
+		duration: 2000
+	}).publishes({
+		start: '/fx/start',
+		complete: '/fx/complete'
+	}).subscribe('/start/fx1', function(){
+		this.start('#585858', '#fff');
+	});
 
-// subscribe to a channel
-el.subscribe('/nav/click', function(target){ 
-	// context is the subscribing object
-	this.set('class', target.get('class'))
-}).publishes('/el/hover', 'mouseenter');
+	var fx2 = new Fx.Tween(fixture, {
+		property: 'color',
+		duration: 2000
+	}).publishes({
+		start: '/fx/start',
+		complete: '/fx/complete'
+	}).subscribe('/start/fx2', function(){
+		this.start('#e00', '#000');
+	});
 
-$(document.body).subscribe('/el/hover', function(event){
-	console && console.log(event);
-	this.highlight();
-});
- 
+	$('fx1-go').publishes('click', ['/fx/start', '/start/fx1']);
+	$('fx2-go').publishes('click', ['/fx/start', '/start/fx2']);
+	$('go').publishes('click', [
+		'fx/start', 
+		'/start/fx1', 
+		'/start/fx2'
+	]);
+
+	// note that when the objects are built up you don't find any
+	// refrences to other objects, just the object's interaction with a channel
+
+
 /*
-// MooTools already has "pub/sub" with its custom events.
 
-var semantics = {
-	'publish'    : 'fireEvent',
-	'subscribe'  : 'addEvent',
-	'unsubscribe': 'removeEvents'
-};
+	// without channels
 
-// "subscribing" is simply adding an event to the mediator (window)
-window.addEvent('/nav/click', function(target){
-	el.toggleClass(target.get('class'));
-});
+	var fixture = $('fixture');
+	
+	var fx1 = new Fx.Tween(fixture, {
+		property: 'background-color',
+		duration: 2000
+	});
 
-nav.addEvent('click', function(target){
-	// "publishing" is simply firing an event on the mediator (window)
-	window.fireEvent('/nav/click', target);
-});
+	var fx2 = new Fx.Tween(fixture, {
+		property: 'color',
+		duration: 2000
+	});
 
-// "unsubscribing" is simply removing the events
-// window.removeEvents('/nav/click');
+	var events = {
+		start: function(){
+			fixture.set('text', 'oh cool, the fx started');
+		},
+		complete: function(){
+			fixture.set('text', 'All done.')
+		}
+	};
 
-// if you store a function, you can remove only one "subscription"
-// window.removeEvent('/nav/click', fn);
+	fx1.addEvents(events);
+	fx2.addEvents(events);
 
-*/
+	$('fx1-go').addEvent('click', function(){
+		fx1.start('#585858', '#fff');
+	});
 
+	$('fx2-go').addEvent('click', function(){
+		fx2.start('#e00', '#000');
+	});
+
+	$('go').addEvent('click', function(){
+		fx1.start('#585858', '#fff');
+		fx2.start('#e00', '#000')
+	});
+
+*/	
 });

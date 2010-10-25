@@ -3,19 +3,35 @@
 <head>
 	<meta http-equiv=Content-type content="text/html; charset=utf-8">
 	<title>index.html</title>
-	<link rel="stylesheet" href="stylesheet.css" charset="utf-8">
+	<style>
+		body {
+			background: #ccc;
+			font-family: helvetica, verdana;
+			padding: 50px;
+		}
+		#fixture {
+			width: 400px;
+			height: 250px;
+			padding-top: 50px;
+			margin-top: 50px;
+			text-align: center;
+			font-size: 50px;
+			border: solid 1px;
+			background: #fff;
+		}
+	</style>
 </head>
 <body>
+	
+	<button id=fx1-go>start fx1</button>
+	<button id=fx2-go>start fx2</button>
+	<button id=go>start both</button>
+	
+	<div id=fixture>Waiting...</div>
 
-	<nav id=nav>
-		<a class="one">Click</a> <a class="two">These</a> <a class="three">Items</a>
-	</nav>
-
-	<div>Hover Me</div>
-
-	<script type="text/javascript" charset="utf-8" src="lib/mootools.js"></script>
+	<script type="text/javascript" charset="utf-8" src="http://ajax.googleapis.com/ajax/libs/mootools/1.3/mootools.js"></script>
 	<script type="text/javascript" charset="utf-8" src="../Source/Channels.js"></script>
-	<script type="text/javascript" charset="utf-8" src="lib/nav.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../Source/Element.Channels.js"></script>
 	<script type="text/javascript" charset="utf-8" src="demo.js"></script>
 
 </body>

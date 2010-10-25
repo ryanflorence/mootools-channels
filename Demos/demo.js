@@ -37,7 +37,7 @@ window.addEvent('domready', function(){
 	]);
 
 	// note that when the objects are built up you don't find any
-	// refrences to other objects, just the object's interaction with a channel
+	// references to other objects, just the object's interaction with a channel
 
 
 /*

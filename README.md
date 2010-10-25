@@ -5,9 +5,9 @@ Channels
 
 _Without channels_
 
-    var req = new Request(options);
-    var el = $('some-id');
-    var fx = Fx.Tween(el);
+    var req = new Request(options),
+        el = $('some-id'),
+        fx = Fx.Tween(el);
     
     req.addEvent('complete', function(response){
       // this == req
@@ -18,40 +18,43 @@ _Without channels_
 
 _With Channels_
 
-    var req = new Request(options);
-    req.publishes('/req/complete', 'complete');
+    var req = new Request(options)
+    req.publishes('complete', '/req/complete');
     
     var el = $('some-id');
     el.subscribe('/req/complete', function(response){
-      // this == el
       this.set('text', response);
     });
     
     var fx = Fx.Tween(el);
     fx.subscribe('/req/complete', function(){
-      this.start()
+      this.start();
     });
 
 Most of the time, when objects need to communicate with each other, you don't care about the object that fires the event, you care about some other object that is managed in the event.  Using `Channels` you can keep the logic pertaining to a particular object all in the same place instead of scattered throughout your application in different event handlers.
 
 _Chaining_
 
-Chaining is sometimes helpful, and fully supported in `Channels`.
+Chaining is often helpful, and fully supported in `Channels`.
 
-    var req = new Request(options).publishes('req/complete', 'complete')
-    , el = $('some-id').subscribe('/req/complete', function(res){ this.set('text', res); })
-    , fx = Fx.Tween(el).subscribe('/req/complete', function(){ this.start() });
+    var req = new Request(options).publishes('complete', 'req/complete'),
+        el = $('some-id').subscribe('/req/complete', function(res){ this.set('text', res); }),
+        fx = Fx.Tween(el).subscribe('/req/complete', function(){ this.start() });
 
 Instance Methods
 ----------------
 
 Both methods, `publishes` and `subscribe`, take either two args, or an object literal.
 
-    el.publishes('channel', 'mouseenter');
+    el.publishes('mouseenter', 'channel');
     fx.publishes({
-      'somechannel': 'start',
-      'otherchannel': 'complete'
+      'start': '/some/channel',
+      'complete': '/another/channel'
     });
+
+The `publishes` method can take an array for the second argument (or `value` in the case of a key:value object literal):
+
+    el.publishes('click', ['channel1', 'channel2', 'channel3']);
 
 Channels Methods & Properties
 -----------------------------
@@ -61,21 +64,22 @@ The `Channels` object has a couple properties and a method:
     // remove a channel completely
     Channels.remove('channel');
     
-    // array of current channels being published
+    // array of current channels being published, helpful for debugging
     Channels.publishing;
     
-    // array of current subscriptions
+    // array of current subscriptions, helpful for debugging
     Channels.subscriptions;
+
+Works on the Server and the Client
+----------------------------------
+
+Mediating element events is optional, making this script ideal for both server-side and client-side scripts.  You need to include `Element.Channels` if you want to mediate element events.
+
 
 Todo
 ----
 
 Unsubscribe an object from a channel with `unsubscribe`, but keep other element subscriptions in tact.
-
-Works on the Server and the Client
-==================================
-
-Mediating element events is optional, making this script ideal for both server-side and client-side scripts.  You need to include `Element.Channels` if you want to mediate element events.
 
 
 MooTools and Publish Subscribe

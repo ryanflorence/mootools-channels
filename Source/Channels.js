@@ -27,7 +27,11 @@ provides: [Channels]
 var mediator = new Events,
 
 	methods = {
-		publishes: function(channel, eventName){
+		publishes: function(eventName, channel){
+			if (typeOf(channel) === 'array'){
+				channel.each(function(channel){ this.publishes(eventName, channel); }, this);
+				return;
+			}
 			Channels.publishing.push({publisher: this, channel: channel, event: eventName});
 			this.addEvent(eventName, function(){
 				mediator.fireEvent.call(mediator, channel, arguments);

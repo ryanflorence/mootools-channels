@@ -3,7 +3,7 @@ Channels
 
 `Channels` simply relay an object's events to a mediator `Events` object, allowing other objects to subscribe to the events. This is simply an alternative pattern you may find helpful when organizing your code.  It extends upon the traditional "pub/sub" pattern already existent in MooTools.
 
-_Without channels_
+__Without channels__
 
     var req = new Request(options),
         el = $('some-id'),
@@ -16,7 +16,7 @@ _Without channels_
       fx.start();
     });
 
-_With Channels_
+__With Channels__
 
     var req = new Request(options)
     req.publishes('complete', '/req/complete');
@@ -33,7 +33,10 @@ _With Channels_
 
 Most of the time, when objects need to communicate with each other, you don't care about the object that fires the event, you care about some other object that is managed in the event.  Using `Channels` you can keep the logic pertaining to a particular object all in the same place instead of scattered throughout your application in different event handlers.
 
-_Chaining_
+This example makes it seem like there's more code when using Channels.  In my experience it actually decreases the amount of code in highly interactive sites.  See `Demos/demo.js` for a lengthier demonstration.
+
+
+__Chaining__
 
 Chaining is often helpful, and fully supported in `Channels`.
 
@@ -61,6 +64,10 @@ Channels Methods & Properties
 
 The `Channels` object has a couple properties and a method:
 
+    // implement channels into an existing class
+    Channels.installTo(Fx);
+    Channels.installTo([Fx, Request]);
+    
     // remove a channel completely
     Channels.remove('channel');
     

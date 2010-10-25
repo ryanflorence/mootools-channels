@@ -58,6 +58,10 @@ Object.append(Channels, {
 		});
 	},
 	installTo: function(obj){
+		if (typeOf(obj) === 'array'){
+			obj.each(function(item){ Channels.installTo(item); }, this);
+			return;
+		}
 		obj.implement(methods);
 	}
 });

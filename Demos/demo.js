@@ -1,5 +1,5 @@
 // if creating your own class, just use Implements: [Events, Channels]
-Fx.implement(Channels.prototype);
+Channels.installTo(Fx);
 
 window.addEvent('domready', function(){
 

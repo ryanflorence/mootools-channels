@@ -20,8 +20,4 @@ provides: [Element.Channels]
 ...
 */
 
-[Window, Document, Element].each(function(item){
-	Channels.installTo(item);
-});
-
-
+Channels.installTo([Window, Document, Element]);

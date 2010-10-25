@@ -17,7 +17,7 @@
 <script src="/depender/build?require=Channels/Element.Channels,Core/Fx.Tween"></script>
 
 <script>
-Fx.implement(Channels.prototype);
+Channels.installTo(Fx);
 
 var fixture = $('fixture').subscribe({
 	'/fx/start': function(){

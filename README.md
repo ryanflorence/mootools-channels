@@ -72,6 +72,12 @@ Todo
 
 Unsubscribe an object from a channel with `unsubscribe`, but keep other element subscriptions in tact.
 
+Works on the Server and the Client
+==================================
+
+Mediating element events is optional, making this script ideal for both server-side and client-side scripts.  You need to include `Element.Channels` if you want to mediate element events.
+
+
 MooTools and Publish Subscribe
 ==============================
 

@@ -14,7 +14,7 @@
 
 <div id=fixture>Waiting...</div>
 
-<script src="/depender/build?require=Channels/Channels,Core/Fx.Tween"></script>
+<script src="/depender/build?require=Channels/Element.Channels,Core/Fx.Tween"></script>
 
 <script>
 Fx.implement(Channels.prototype);
@@ -22,19 +22,17 @@ Fx.implement(Channels.prototype);
 var fixture = $('fixture').subscribe({
 	'/fx/start': function(){
 		this.set('text', 'oh cool, the fx started')
-	},
-	'/fx/complete': function(){
-		this.set('text', "All done.").set.delay(1000, this, ['text','Waiting...']);
 	}
+}).subscribe('/fx/complete', function(){
+	this.set('text', "All done.").set.delay(1000, this, ['text','Waiting...']);
 });
 
 var fx = new Fx.Tween(fixture, {
 	property: 'background-color',
 	duration: 2000
-}).publishes(	{
-	'/fx/start': 'start',
-	'/fx/complete': 'complete'
-});
+}).publishes({
+	'/fx/start': 'start'
+}).publishes('/fx/complete', 'complete');
 
 makeActions([
 

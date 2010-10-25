@@ -8,3 +8,5 @@ license: MIT-style license.
 
 sources:
   - "Source/Channels.js"
+  - "Source/Element.Channels.js"
+  

@@ -3,7 +3,7 @@
 
 name: Channels
 
-description: Mediate Element and Class events through the window. An expanded pattern for pub/sub.
+description: Mediate Class events. An expanded pattern for pub/sub.
 
 license: MIT-style license.
 
@@ -16,7 +16,6 @@ inspiration:
 
 requires:
   - Core/Class.Extras
-  - Core/Element.Event
 
 provides: [Channels]
 
@@ -25,47 +24,25 @@ provides: [Channels]
 
 (function(){
 
-var mediator = new Events
+var mediator = new Events,
 
-, methods = {
+	methods = {
+		publishes: function(channel, eventName){
+			Channels.publishing.push({publisher: this, channel: channel, event: eventName});
+			this.addEvent(eventName, function(){
+				mediator.fireEvent.call(mediator, channel, arguments);
+			});
+			return this;
+		}.overloadSetter(), // not public MooTools
 
-	createChannel: function(channel, eventName){
-		Channels.publishing.push({publisher: this, channel: channel, event: eventName});
-		this.addEvent(eventName, function(){
-			mediator.fireEvent.call(mediator, channel, arguments);
-		});
-		return this;
+		subscribe: function(channel, fn){
+			Channels.subscriptions.push({subscriber: this, channel: channel});
+			mediator.addEvent(channel, fn.bind(this));
+			return this;
+		}.overloadSetter()
 	},
-	
-	createChannels: function(events){
-		for (var channel in events) this.createChannel(channel, events[channel]);
-		return this;
-	},
-	
-	publishes: function(){
-		return this['createChannel' + ((arguments.length == 1) ? 's' : '')].apply(this, arguments);
-	},
-	
-	subscribeToChannel: function(channel, fn){
-		Channels.subscriptions.push({subscriber: this, channel: channel});
-		mediator.addEvent(channel, fn.bind(this));
-		return this;
-	},
-	
-	subscribeToChannels: function(events){
-		for (var channel in events) this.subscribeToChannel(channel, events[channel]);
-		return this;
-	},
-	
-	subscribe: function(){
-		return this['subscribeToChannel' + ((arguments.length == 1) ? 's' : '')].apply(this, arguments);
-	}
 
-}
-
-, Channels = this.Channels = new Class(methods);
-
-this.Element.implement(methods);
+	Channels = this.Channels = new Class(methods);
 
 Object.append(Channels, {
 	publishing: [],
@@ -75,6 +52,9 @@ Object.append(Channels, {
 		Channels.publishing = Channels.publishing.filter(function(item){ 
 			return item.channel != channel;
 		});
+	},
+	installTo: function(obj){
+		obj.implement(methods);
 	}
 });
 
